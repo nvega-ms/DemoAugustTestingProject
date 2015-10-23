@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="AugustTestDemo" >
+    <test name="Registration - Happy path">
+    	<!-- Apk info -->
+        <parameter name="AugustAppPackageName" value="com.august.luna" />
+        <parameter name="AugustAppActivityName" value=".ui.startup.LandingPage" />
+        <parameter name="apkName" value="August.apk" />
+        
+        <!-- OS info -->
+        <parameter name="version" value="4.4.2" />
+        
+        <!-- Device info -->
+        <parameter name="deviceName" value="4d00bfd7479f80c9" />
+        
+        <!-- User info -->
+        <parameter name="firstName" value="" />
+        <parameter name="LastName" value="" />
+        
+        <!-- Password sheet -->
+        <parameter name="folderPath" value="\\src\\test\\resources\\TestData.xlsx" />
+        <parameter name="sheetNameInvalidPasswords" value="InvalidPasswords" />
+        <parameter name="sheetNameValidPasswords" value="ValidPasswords" />
+        <classes>
+            <!--   <class name = "august.tests.PasswordValidationTest"></class> -->
+           		<class name = "august.tests.HappyPathTest"></class> 
+        </classes>
+    </test>   
+</suite>
