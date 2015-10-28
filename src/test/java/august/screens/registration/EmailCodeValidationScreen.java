@@ -48,6 +48,14 @@ public class EmailCodeValidationScreen extends ScreenObject{
 	}
 	
 	/**
+	 * Set the code validation field  
+	 * @param code - Code extracted from the email sent by August
+	 */
+	public void enterCode(String code){
+		this.sendKey(byEmailField, "Email code verification", code);
+	}
+	
+	/**
 	 * Wait the code entered manually
 	 */
 	public void waitForCode()

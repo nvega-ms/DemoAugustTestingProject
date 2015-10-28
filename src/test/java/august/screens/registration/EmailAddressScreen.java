@@ -2,6 +2,7 @@ package august.screens.registration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.appium.java_client.AppiumDriver;
 /**
@@ -38,6 +39,7 @@ public class EmailAddressScreen extends ScreenObject{
 	public void enterEmailAddress(String emailAddress)
 	{
 		this.sendKey(byEmailField, "Email Address", emailAddress);
+		
 	}
 	
 	/**
@@ -47,6 +49,7 @@ public class EmailAddressScreen extends ScreenObject{
 	{
 		try{
 			driver.findElement(byContinue).click();
+			WebDriverWait wait = new WebDriverWait(driver, 100);
 		}
 		catch (NoSuchElementException e){
 			System.out.println("The 'Continue' element was not found. See error: " + e.getMessage());

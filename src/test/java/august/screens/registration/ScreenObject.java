@@ -81,8 +81,16 @@ public class ScreenObject {
 	 * @return
 	 */
 	public boolean isDisplayed(By byPasswordErrorLocator) {
-	
-		return ((driver.findElement(byPasswordErrorLocator)!= null)&&(driver.findElement(byPasswordErrorLocator).isDisplayed()));
+		boolean displayed;
+		try{
+			displayed = ((driver.findElement(byPasswordErrorLocator)!= null)&&(driver.findElement(byPasswordErrorLocator).isDisplayed()));
+			return displayed;
+		}
+		catch (NoSuchElementException e){
+			System.out.println("The element was not found. See error: " + e.getMessage());
+			return false;
+		}
+		
 	}
 	
 	/**

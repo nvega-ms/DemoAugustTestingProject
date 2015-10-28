@@ -13,7 +13,6 @@ import io.appium.java_client.AppiumDriver;
 public class LetMeInScreen extends ScreenObject{
 	
 	By byLetMeIn = By.name("Thanks for creating your August account!");
-
 	
 	public LetMeInScreen(AppiumDriver d)
 	{

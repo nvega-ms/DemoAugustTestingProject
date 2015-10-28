@@ -10,11 +10,18 @@
         <parameter name="version" value="4.4.2" />
         
         <!-- Device info -->
-        <parameter name="deviceName" value="4d00bfd7479f80c9" />
+        <parameter name="deviceName" value="4d00dab34dda41e7" />
         
         <!-- User info -->
-        <parameter name="firstName" value="" />
-        <parameter name="LastName" value="" />
+        <parameter name="firstName" value="Charles" />
+        <parameter name="lastName" value="Smith" />
+        <parameter name="password" value="Abcde123456!" />
+        
+        <parameter name="email" value="automatedtestms@gmail.com" />
+        <parameter name="countryName" value="Argentina" />
+        <parameter name="phoneNumber" value="0249154248268" />
+        <parameter name="photoSource" value="Photos" />
+
         
         <!-- Password sheet -->
         <parameter name="folderPath" value="\\src\\test\\resources\\TestData.xlsx" />
@@ -22,7 +29,7 @@
         <parameter name="sheetNameValidPasswords" value="ValidPasswords" />
         <classes>
             <!--   <class name = "august.tests.PasswordValidationTest"></class> -->
-           		<class name = "august.tests.HappyPathTest"></class> 
+           	<class name = "august.tests.HappyPathTest"></class> 
         </classes>
     </test>   
 </suite>
