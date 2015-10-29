@@ -26,7 +26,8 @@ public final class EmailCodeExtractor{
 			String name;
 			try{
 				List<WebElement> options = driver.findElement(By.id("list")).findElements(By.className("android.widget.FrameLayout"));
-				WebElement refreshButton = driver.findElements(By.className("android.widget.Button")).get(1);
+				WebElement refreshButton = getButton(driver);
+				//WebElement refreshButton = driver.findElements(By.className("android.widget.Button")).get(1);
 				int initialCount = options.size();
 				int currentCount;
 				do {
@@ -84,7 +85,30 @@ public final class EmailCodeExtractor{
 			                return (d.findElement(elementLocator)!=null);
 			            }});
 		}
-
+		
+		/**
+		 * Returns the Refresh button
+		 * @param driver
+		 * @return Refresh button
+		 */
+		public static WebElement getButton(AppiumDriver driver){
+			List<WebElement> buttons;
+			int countButtons = 4;
+			int current;
+			do {
+				current = driver.findElements(By.className("android.widget.Button")).size();
+			} while (current < countButtons);
+			
+			buttons = driver.findElements(By.className("android.widget.Button"));
+			for(int i = 0; i < buttons.size();i++)
+			{
+				WebElement e = (WebElement)buttons.get(i);
+				String name = e.getAttribute("name");
+				if (name.contains("Refresh"))		
+					return e;
+			}
+			return null;
+		}
 }
 
 

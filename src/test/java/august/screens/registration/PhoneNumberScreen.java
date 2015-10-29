@@ -59,6 +59,7 @@ public class PhoneNumberScreen extends ScreenObject{
 	public void enterPhoneNumber(String phoneNumber)
 	{
 		this.sendKey(byEnterPhoneNumber, "Phone numer", phoneNumber);
+		this.hideKeyboard();
 	}
 	
 	/**

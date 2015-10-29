@@ -15,8 +15,7 @@
         <!-- User info -->
         <parameter name="firstName" value="Charles" />
         <parameter name="lastName" value="Smith" />
-        <parameter name="password" value="Abcde123456!" />
-        
+        <parameter name="password" value="Abcde123456!" />        
         <parameter name="email" value="automatedtestms@gmail.com" />
         <parameter name="countryName" value="Argentina" />
         <parameter name="phoneNumber" value="0249154248268" />
