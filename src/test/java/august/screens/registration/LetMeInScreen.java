@@ -19,7 +19,9 @@ public class LetMeInScreen extends ScreenObject{
 		super(d);
 	}
 	
-	
+	/**
+	 * Clicks on the LetMeIn button
+	 */
 	public void clickOnLetMeIn()
 	{
 		try{
@@ -29,7 +31,10 @@ public class LetMeInScreen extends ScreenObject{
 			System.out.println("The 'Let me in' element was not found. See error: " + e.getMessage());
 		}
 	}
-	
+	/**
+	 * Checks if the current screen is which contains "Let me in"
+	 * @return
+	 */
 	public boolean isLetMeInScreen()
 	{			
 		return ( this.isDisplayed(byLetMeIn) );

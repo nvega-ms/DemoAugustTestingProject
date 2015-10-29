@@ -39,7 +39,7 @@ public class EmailAddressScreen extends ScreenObject{
 	public void enterEmailAddress(String emailAddress)
 	{
 		this.sendKey(byEmailField, "Email Address", emailAddress);
-		
+		this.hideKeyboard();
 	}
 	
 	/**
@@ -47,13 +47,8 @@ public class EmailAddressScreen extends ScreenObject{
 	 */
 	public void clickOnContinue()
 	{
-		try{
-			driver.findElement(byContinue).click();
-			WebDriverWait wait = new WebDriverWait(driver, 100);
-		}
-		catch (NoSuchElementException e){
-			System.out.println("The 'Continue' element was not found. See error: " + e.getMessage());
-		}
+		this.click(byContinue, "Continue");
+		
 	}
 	
 }

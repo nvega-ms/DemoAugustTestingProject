@@ -26,12 +26,14 @@ public final class EmailCodeExtractor{
 			String name;
 			try{
 				List<WebElement> options = driver.findElement(By.id("list")).findElements(By.className("android.widget.FrameLayout"));
+				WebElement refreshButton = driver.findElements(By.className("android.widget.Button")).get(1);
 				int initialCount = options.size();
 				int currentCount;
 				do {
+					refreshButton.click();
 					options = driver.findElement(By.id("list")).findElements(By.className("android.widget.FrameLayout"));
 					currentCount = options.size();
-				} while (initialCount <= currentCount);
+				} while (currentCount <= initialCount);
 				
 				for(int i = 4; i < options.size()-1;i++)
 				{

@@ -120,7 +120,10 @@ public class ScreenObject {
 	 */
 	public void hideKeyboard()
 	{
+		try{
 		driver.hideKeyboard();
+		}
+		catch(Exception e){}
 	}
 	
 	/**

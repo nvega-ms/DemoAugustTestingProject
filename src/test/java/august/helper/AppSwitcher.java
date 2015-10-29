@@ -28,19 +28,19 @@ public final class AppSwitcher {
 		
 		// KEYCODE_APP_SWITCH
 		_d.sendKeyEvent(0x000000bb);
-		WebDriverWait wait = new WebDriverWait(_d, 100);
+		WebDriverWait wait = new WebDriverWait(_d, 1000);
 		
 		// Tap our first app
 		List<WebElement> elem = _d.findElements(By.className("android.widget.TextView"));//"android.widget.FrameLayout"));
 		for (int i = 0; i < elem.size() - 1; i++) {
 			if (elem.get(i).getAttribute("name").equals(appName)) {
-				
+				WebDriverWait wait2 = new WebDriverWait(_d, 100);
 				_d.tap(1, elem.get(i), 100);
 				break;
 			}
 
 		}
-		WebDriverWait wait2 = new WebDriverWait(_d, 100);
+		WebDriverWait wait3 = new WebDriverWait(_d, 1000);
 	
 	}
 }

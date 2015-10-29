@@ -30,6 +30,7 @@ public class SMSCodeValidationScreen extends ScreenObject{
 	public SMSCodeValidationScreen(AppiumDriver d)
 	{
 		super(d);
+		driver.findElement(byCodeField).click();
 	}
 	
 	/**
