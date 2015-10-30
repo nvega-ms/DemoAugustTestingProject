@@ -28,32 +28,11 @@ import august.screens.registration.YouAreInvitedScreen;
 
 public class HappyPathTest {
 
-	public static AppiumDriver _driver;
-
-	String SMSAppPackageName = "com.android.email";
-
-	String SMSAppActivityName = ".activity.Welcome";
+	static AppiumDriver _driver;
 
 	DesiredCapabilities capabilities;
 
-	/**
-	 * Release the driver
-	 * 
-	 * @throws Exception
-	 */
-	@AfterTest
-	public void afterClass() throws Exception {
-		_driver.quit();
-	}
-
-	/**
-	 * Reset the application before each test
-	 */
-	@BeforeMethod
-	public void beforeMethod() {
-		_driver.resetApp();
-	}
-
+	
 	/**
 	 * Initialize the capabilities, and launch the Android driver
 	 * 
@@ -84,6 +63,7 @@ public class HappyPathTest {
 			_driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"),
 					capabilities);
 			
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -99,67 +79,98 @@ public class HappyPathTest {
 	 * 
 	 */
 	@Parameters({ "AugustAppPackageName", "AugustAppActivityName" , "email", "phoneNumber", "countryName", "photoSource", 
-		         "firstName", "lastName", "password"})
+		         "firstName", "lastName", "password", "timeout","EmailAppPackageName", "EmailAppActivityName"})
 	@Test(description = "User registration - Happy path")
 	public void enterData_ValidData_SignIn(String AugustAppPackageName,
 			String AugustAppActivityName, String email, String phoneNumber, String countryName, String photoSource,
-			String firstName, String lastName, String password) {
+			String firstName, String lastName, String password, long timeout
+			, String EmailAppPackageName, String EmailAppActivityName) {
 
 		// Initial screen
-		YouAreInvitedScreen welcomeScreen = new YouAreInvitedScreen(_driver);
+		YouAreInvitedScreen welcomeScreen = new YouAreInvitedScreen(_driver, timeout);
+		Assert.assertTrue("The Welcome screen should be displayed", welcomeScreen.isExpectedScreen());
+		
 		welcomeScreen.clickOnCreateAccountButton();
-
 		// Agreement screen
-		AgreementScreen agreeScreen = new AgreementScreen(_driver);
+		AgreementScreen agreeScreen = new AgreementScreen(_driver, timeout);
+		Assert.assertTrue("The Agree screen should be displayed", agreeScreen.isExpectedScreen());
 		agreeScreen.Agree();
 
 		// User details screen: First Name, Last Name and Password
-		UserDetailsScreen firstStep = new UserDetailsScreen(_driver);
+		UserDetailsScreen firstStep = new UserDetailsScreen(_driver, timeout);
+		Assert.assertTrue("The User details screen should be displayed", firstStep.isExpectedScreen());
 		firstStep.setAllfields(firstName, lastName, password);
 
 		// Upload picture screen
-		UploadProfilePhotoScreen secondStep = new UploadProfilePhotoScreen(_driver);
+		UploadProfilePhotoScreen secondStep = new UploadProfilePhotoScreen(_driver, timeout);
+		Assert.assertTrue("The Upload photo screen should be displayed", secondStep.isExpectedScreen());
 		secondStep.clickOnUploadPhoto();
 		secondStep.goToPhotoSource(photoSource);
 		secondStep.choosePhotoByPosition(1);
 		secondStep.clickOnContinue();
 
 		// Enter country and phone number screen
-		PhoneNumberScreen thirdStep = new PhoneNumberScreen(_driver);
+		PhoneNumberScreen thirdStep = new PhoneNumberScreen(_driver, timeout);
+		Assert.assertTrue("The Enter phone number screen should be displayed", thirdStep.isExpectedScreen());
 		thirdStep.clickOnCountrySelector();
 		thirdStep.chooseCountryByName(countryName);
 		thirdStep.enterPhoneNumber(phoneNumber);
 		thirdStep.clickOnContinue();
 
 		// Validation code Screen (SMS)
-		SMSCodeValidationScreen fourthStep = new SMSCodeValidationScreen(_driver);
+		SMSCodeValidationScreen fourthStep = new SMSCodeValidationScreen(_driver, timeout);
+		Assert.assertTrue("The Sms code valitation screen should be displayed", fourthStep.isExpectedScreen());
 		fourthStep.waitForCode();
 
 		// Enter email address
-		EmailAddressScreen fifthStep = new EmailAddressScreen(_driver);
+		EmailAddressScreen fifthStep = new EmailAddressScreen(_driver, timeout);
+		Assert.assertTrue("The email address screen should be displayed", fifthStep.isExpectedScreen());
 		fifthStep.enterEmailAddress(email);
 		fifthStep.clickOnContinue();
-
+		
 		// Start Email app
-		((StartsActivity) _driver).startActivity(SMSAppPackageName, SMSAppActivityName);
+		((StartsActivity) _driver).startActivity(EmailAppPackageName, EmailAppActivityName);
 		
 		//Get the code from Inbox email
-		String code = EmailCodeExtractor.getCodeVerificationFromEmail(_driver);
+		EmailCodeExtractor.loading(_driver, timeout);
+		String code = EmailCodeExtractor.getCodeVerificationFromEmail(_driver, timeout);
 
 		//Swith to August app
-		AppSwitcher.SwitchApp(_driver, "August");
+		AppSwitcher.SwitchApp(_driver, "August", timeout);
 		
 		//Enter email code
-		EmailCodeValidationScreen sexthStep = new EmailCodeValidationScreen(_driver);
+		EmailCodeValidationScreen sexthStep = new EmailCodeValidationScreen(_driver, timeout);
+		Assert.assertTrue("The email code validation screen should be displayed", sexthStep.isExpectedScreen());
 		sexthStep.enterCode(code);
 		sexthStep.clickOnContinue();
 
 		//Ley me in screen
-		LetMeInScreen lastStep = new LetMeInScreen(_driver);
+		LetMeInScreen lastStep = new LetMeInScreen(_driver, timeout);
 		Assert.assertTrue("The Last step of the process should be displayed",
-				lastStep.isLetMeInScreen());
+				lastStep.isExpectedScreen());
 
 	}
+	
+	/**
+	 * Release the driver
+	 * 
+	 * @throws Exception
+	 */
+	@AfterTest
+	public void afterClass() throws Exception {
+		_driver.quit();
+	}
+
+	/**
+	 * Reset the application before each test
+	 */
+	@BeforeMethod
+	public void beforeMethod() {
+		_driver.resetApp();
+	}
+
+	
+	//Private
 
 	/**
 	 * 

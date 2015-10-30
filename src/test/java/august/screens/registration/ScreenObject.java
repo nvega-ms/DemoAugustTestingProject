@@ -2,11 +2,8 @@ package august.screens.registration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
+import august.helper.Waiter;
 import io.appium.java_client.AppiumDriver;
 
 /**
@@ -16,17 +13,20 @@ import io.appium.java_client.AppiumDriver;
  * 
 */
 
-public class ScreenObject {
+public abstract class ScreenObject {
 	
 	protected AppiumDriver driver;
+	
+	protected long timeout;
 	
 	/**
 	 * Constructor
 	 * @param AppiumDriver d - Android driver
 	 */
-	public ScreenObject(AppiumDriver d)
+	public ScreenObject(AppiumDriver d, long t)
 	{
-		driver = d;	
+		driver = d;
+		timeout = t;
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class ScreenObject {
 	public void sendKey(By selector, String fieldName, Object value)
 	{
 		try{
-			waitElement(selector);
+			Waiter.waitFor(driver,selector,timeout);
 			driver.findElement(selector).sendKeys((String)value);
 			System.out.println("Setting the " + fieldName+ " field...");
 		}
@@ -65,7 +65,7 @@ public class ScreenObject {
 		{
 			try{
 				System.out.println("Clicking on the " +  buttonText + " button...");
-				waitElement(selector);
+				Waiter.waitFor(driver,selector, timeout);
 				driver.findElement(selector).click();
 			}
 			catch (IndexOutOfBoundsException e){
@@ -93,6 +93,7 @@ public class ScreenObject {
 		
 	}
 	
+	
 	/**
 	 * Get the text of the element associated to the locator
 	 * @param locator - locator
@@ -100,7 +101,7 @@ public class ScreenObject {
 	 */
 	public String getText(By locator)
 	{
-		this.waitElement(locator);
+		Waiter.waitFor(driver,locator, timeout);
 		return this.getElement(locator).getText();
 	}
 			
@@ -111,7 +112,7 @@ public class ScreenObject {
 	 */
 	public WebElement getElement(By elementLocator)
 	{
-		this.waitElement(elementLocator);
+		Waiter.waitFor(driver,elementLocator, timeout);
 		return driver.findElement(elementLocator);
 	}
 	
@@ -126,18 +127,9 @@ public class ScreenObject {
 		catch(Exception e){}
 	}
 	
-	/**
-	 * Wait until the specified element is present
-	 * @param elementSelector - By element to find the element which will receives the value
-	 */
-	public void waitElement(final By elementSelector)
-	{
-		WebDriverWait waiter = new WebDriverWait(driver, 900, 1000);
-		waiter.until(new ExpectedCondition<Boolean>(){
-		            public Boolean apply(WebDriver d) {
-		                return (d.findElement(elementSelector)!=null);
-		            }});
-	}
+	public abstract boolean isExpectedScreen();
+	
+	
 	
 	
 	

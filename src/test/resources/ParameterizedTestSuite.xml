@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="AugustTestDemo" >
     <test name="Registration - Happy path">
+        <!-- Globals -->
+        <parameter name="timeout" value="60" />
+        
     	<!-- Apk info -->
         <parameter name="AugustAppPackageName" value="com.august.luna" />
         <parameter name="AugustAppActivityName" value=".ui.startup.LandingPage" />
         <parameter name="apkName" value="August.apk" />
         
+        <!-- Gmail -->
+        <parameter name="EmailAppPackageName" value="com.android.email" />
+        <parameter name="EmailAppActivityName" value=".activity.Welcome" />
+                
         <!-- OS info -->
         <parameter name="version" value="4.4.2" />
         

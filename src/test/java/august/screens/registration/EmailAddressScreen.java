@@ -1,9 +1,6 @@
 package august.screens.registration;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import io.appium.java_client.AppiumDriver;
 /**
  * 
@@ -27,9 +24,9 @@ public class EmailAddressScreen extends ScreenObject{
 	 * Class constructor.
 	 * @param d - AppiumDriver
 	 */
-	public EmailAddressScreen(AppiumDriver d)
+	public EmailAddressScreen(AppiumDriver d, long t)
 	{
-		super(d);
+		super(d, t);
 	}
 	
 	/**
@@ -49,6 +46,14 @@ public class EmailAddressScreen extends ScreenObject{
 	{
 		this.click(byContinue, "Continue");
 		
+	}
+
+	@Override
+	public boolean isExpectedScreen() {
+		return (this.isDisplayed(By.name("Please enter your email address (we’ll need to send you a code)"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_collect_email_field)"))
+				);
 	}
 	
 }

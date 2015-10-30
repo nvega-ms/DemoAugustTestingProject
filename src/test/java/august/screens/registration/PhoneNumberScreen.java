@@ -1,7 +1,6 @@
 package august.screens.registration;
 
 import org.openqa.selenium.By;
-
 import io.appium.java_client.AppiumDriver;
 /**
  * 
@@ -30,9 +29,9 @@ public class PhoneNumberScreen extends ScreenObject{
 	 * Class constructor.
 	 * @param d - AppiumDriver
 	 */
-	public PhoneNumberScreen(AppiumDriver d)
+	public PhoneNumberScreen(AppiumDriver d, long t)
 	{
-		super(d);
+		super(d, t);
 	}
 	
 	/**
@@ -68,6 +67,17 @@ public class PhoneNumberScreen extends ScreenObject{
 	public void clickOnContinue()
 	{ 
 		this.click(byContinue, "Continue");
+	}
+
+	@Override
+	public boolean isExpectedScreen() {
+		return (this.isDisplayed(By.name("Please enter your mobile number (we’ll need to send you a code)."))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_phone_container_country_code_container"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_phone_container_phone_entry"))
+				
+				);
 	}
 	
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-
 import io.appium.java_client.AppiumDriver;
 
 /**
@@ -40,9 +39,9 @@ public class UploadProfilePhotoScreen extends ScreenObject{
 	 * Class constructor.
 	 * @param d - AppiumDriver
 	 */
-	public UploadProfilePhotoScreen(AppiumDriver d)
+	public UploadProfilePhotoScreen(AppiumDriver d, long t)
 	{
-		super(d);
+		super(d, t);
 	}
 	
 	/**
@@ -130,5 +129,13 @@ public class UploadProfilePhotoScreen extends ScreenObject{
 	public boolean isUploadProfilePhotoScreen()
 	{			
 		return ( this.isDisplayed(byUploadPhoto)&& this.isDisplayed(byText) );
+	}
+
+	@Override
+	public boolean isExpectedScreen() {
+		return( this.isDisplayed(By.name("Now let's upload a profile photo."))
+				&&
+				this.isDisplayed(By.name("Why do I have to upload a photo?"))
+				);
 	}	
 }

@@ -1,8 +1,6 @@
 package august.screens.registration;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-
 import io.appium.java_client.AppiumDriver;
 /**
  * 
@@ -14,9 +12,9 @@ public class LetMeInScreen extends ScreenObject{
 	
 	By byLetMeIn = By.name("Thanks for creating your August account!");
 	
-	public LetMeInScreen(AppiumDriver d)
+	public LetMeInScreen(AppiumDriver d, long t)
 	{
-		super(d);
+		super(d, t);
 	}
 	
 	/**
@@ -24,20 +22,15 @@ public class LetMeInScreen extends ScreenObject{
 	 */
 	public void clickOnLetMeIn()
 	{
-		try{
-			driver.findElement(byLetMeIn).click();
-		}
-		catch (NoSuchElementException e){
-			System.out.println("The 'Let me in' element was not found. See error: " + e.getMessage());
-		}
+		this.click(byLetMeIn, "Let me in");
 	}
 	/**
 	 * Checks if the current screen is which contains "Let me in"
 	 * @return
 	 */
-	public boolean isLetMeInScreen()
-	{			
-		return ( this.isDisplayed(byLetMeIn) );
+	@Override
+	public boolean isExpectedScreen() {
+		return (this.isDisplayed(byLetMeIn) );
 	}	
 	
 }

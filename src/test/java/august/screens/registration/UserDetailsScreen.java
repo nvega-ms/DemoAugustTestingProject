@@ -2,8 +2,6 @@ package august.screens.registration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-
 import io.appium.java_client.AppiumDriver;
 /**
  * 
@@ -39,9 +37,9 @@ public class UserDetailsScreen extends ScreenObject {
 	 * @param d - AppiumDriver
 	 */
 	
-	public UserDetailsScreen(AppiumDriver d)
+	public UserDetailsScreen(AppiumDriver d, long t)
 	{
-		super(d);
+		super(d, t);
 		
 	}
 	
@@ -118,5 +116,17 @@ public class UserDetailsScreen extends ScreenObject {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setPassword(password);
+	}
+
+
+	@Override
+	public boolean isExpectedScreen() {
+		return (this.isDisplayed(By.id("com.august.luna:id/signup_flow_first_name_field"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_last_name_field"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_password_field"))
+				
+				);
 	}
 }

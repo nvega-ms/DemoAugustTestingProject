@@ -17,10 +17,6 @@ import org.testng.annotations.Test;
 
 import august.helper.ExcelUtils;
 import august.screens.registration.AgreementScreen;
-import august.screens.registration.EmailAddressScreen;
-import august.screens.registration.EmailCodeValidationScreen;
-import august.screens.registration.PhoneNumberScreen;
-import august.screens.registration.SMSCodeValidationScreen;
 import august.screens.registration.UploadProfilePhotoScreen;
 import august.screens.registration.UserDetailsScreen;
 import august.screens.registration.YouAreInvitedScreen;
@@ -143,20 +139,21 @@ public class PasswordValidationTest {
 	 * @param password - Given password
 	 * 
 	 */
+	@Parameters({"timeout"})
 	@Test(description = "The user enters a invalid password", dataProvider="InvalidPasswords")
-	public void enterPassword_InvalidPassword_ThrowError(String password){
+	public void enterPassword_InvalidPassword_ThrowError(String password, long timeout){
 		System.out.println("Scenario: The user enters a invalid password. Password: " + password);
 		System.out.println("--------------------------------------------------------------------");
 		//Initial screen
-		YouAreInvitedScreen welcomeScreen = new YouAreInvitedScreen(driver);
+		YouAreInvitedScreen welcomeScreen = new YouAreInvitedScreen(driver, timeout);
 		welcomeScreen.clickOnCreateAccountButton();
 		
 		//Agreement screen
-		AgreementScreen agreeScreen= new AgreementScreen(driver);
+		AgreementScreen agreeScreen= new AgreementScreen(driver, timeout);
 		agreeScreen.Agree();
 		
 		//User details screen: First Name, Last Name and Password 
-		UserDetailsScreen firstStep = new UserDetailsScreen(driver);
+		UserDetailsScreen firstStep = new UserDetailsScreen(driver, timeout);
 		firstStep.setAllfields("Charles","Fox",password);
 		Assert.assertTrue("A error message should be displayed", firstStep.isErrorDisplayed());
 	}
@@ -167,22 +164,23 @@ public class PasswordValidationTest {
 	 * @param password - Given password
 	 * 
 	 */
+	@Parameters({"timeout"})
 	@Test(description = "The user enters a valid password", dataProvider="ValidPasswords")
-	public void enterPassword_validPassword_NoError(String password){
+	public void enterPassword_validPassword_NoError(String password, long timeout){
 		System.out.println("Scenario: The user enters a valid password. Password: " + password);
 		System.out.println("--------------------------------------------------------------------");
 		//Initial screen
-		YouAreInvitedScreen welcomeScreen = new YouAreInvitedScreen(driver);
+		YouAreInvitedScreen welcomeScreen = new YouAreInvitedScreen(driver, timeout);
 		welcomeScreen.clickOnCreateAccountButton();
 		
 		//Agreement screen
-		AgreementScreen agreeScreen= new AgreementScreen(driver);
+		AgreementScreen agreeScreen= new AgreementScreen(driver, timeout);
 		agreeScreen.Agree();
 		
 		//User details screen: First Name, Last Name and Password 
-		UserDetailsScreen firstStep = new UserDetailsScreen(driver);
+		UserDetailsScreen firstStep = new UserDetailsScreen(driver, timeout);
 		firstStep.setAllfields("Charles","Fox",password);
-		UploadProfilePhotoScreen secondStep = new UploadProfilePhotoScreen(driver);
+		UploadProfilePhotoScreen secondStep = new UploadProfilePhotoScreen(driver, timeout);
 		Assert.assertTrue("No error should be displayed",secondStep.isUploadProfilePhotoScreen());
 	}
 	

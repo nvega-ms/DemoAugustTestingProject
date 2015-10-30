@@ -4,10 +4,8 @@ import io.appium.java_client.AppiumDriver;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 /**
  * This class will extracts the code from the Email Inbox
@@ -15,53 +13,60 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  */
 public final class EmailCodeExtractor{
+	
+		static By byRefresh = By.id("com.android.email:id/refresh_port");
+		
+		static By byDelete = By.id("com.android.email:id/delete");
+		
+		static By byBack = By.id("com.android.email:id/message_view_action_bar_custom");
+		
+		/**
+		 * Wait the Email app is fully loaded
+		 * @param driver
+		 */
+		public static void loading(AppiumDriver driver, long timeout){
+			System.out.println("Loading Email inbox");
+			Waiter.waitFor(driver, By.id("android:id/decor_content_parent"),timeout );
+			Waiter.waitFor(driver, By.id("android:id/action_bar_container"), timeout);
+			Waiter.waitFor(driver, By.id("com.android.email:id/bottom_action_bar"), timeout);
+			
+		}
 				
 		/**
 		 * Extracts the code from the EmailInbox
 		 * @param driver
 		 * @return The code to validate
 		 */
-		public static String getCodeVerificationFromEmail(AppiumDriver driver)
+		public static String getCodeVerificationFromEmail(AppiumDriver driver, long timeout)
 		{
+			System.out.println("Getting validation code from email");
 			String name;
+			List<WebElement> emails = getEmails(driver);
 			try{
-				List<WebElement> options = driver.findElement(By.id("list")).findElements(By.className("android.widget.FrameLayout"));
-				WebElement refreshButton = getButton(driver);
-				//WebElement refreshButton = driver.findElements(By.className("android.widget.Button")).get(1);
-				int initialCount = options.size();
-				int currentCount;
-				do {
-					refreshButton.click();
-					options = driver.findElement(By.id("list")).findElements(By.className("android.widget.FrameLayout"));
-					currentCount = options.size();
-				} while (currentCount <= initialCount);
+				//Check if already received the email
+				if (emails.size() == 0)
+					waitEmail(driver, timeout);
 				
-				for(int i = 4; i < options.size()-1;i++)
+				emails = getEmails(driver); 
+				for(int i = 4; i < emails.size()-1;i++)
 				{
-					WebElement e = (WebElement)options.get(i);
+					WebElement e = (WebElement)emails.get(i);
 					if (e.isEnabled())
 					{
 						e.click();
+						
 						By locator = By.xpath("//android.webkit.WebView/descendant::android.view.View/descendant::android.view.View");
-						waitElement(driver,locator);
+						Waiter.waitFor(driver,locator, timeout);
 						WebElement verificationCode = driver.findElement(locator);
 						name = verificationCode.getAttribute("name");
 						if (name.contains("Your August email verification code is"))
 						{			
-							System.out.println("Extracting code...");
 							String code = name.replaceAll("\\D", "");
-							System.out.println("Code: " + code);
-							driver.findElement(By.className("android.widget.Button")).click();
+							getButton(driver,byDelete, timeout).click();
 							return code;
 						}
 						else
-						{
-							By backLocator = By.xpath("//android.widget.LinearLayout");
-							waitElement(driver, backLocator);
-							driver.findElement(backLocator).click();;
-						}
-								
-						
+							getButton(driver, byBack, timeout).click();
 					}
 				}
 			}
@@ -72,42 +77,52 @@ public final class EmailCodeExtractor{
 			return null;
 		}
 		
+		
 		/**
-		 * Wait a given WebElement
+		 * Returns the buttons associated to the given locator
 		 * @param driver
-		 * @param elementLocator
+		 * @return  button
 		 */
-		private static void waitElement(AppiumDriver driver, final By elementLocator)
-		{
-			WebDriverWait waiter = new WebDriverWait(driver, 900, 1000);
-			waiter.until(new ExpectedCondition<Boolean>(){
-			            public Boolean apply(WebDriver d) {
-			                return (d.findElement(elementLocator)!=null);
-			            }});
+		private static WebElement getButton(AppiumDriver driver, By locator, long timeout){
+			try{
+			Waiter.waitFor(driver, locator, timeout);
+			return (driver.findElement(locator));
+			}
+			catch(Exception e){
+				System.out.println("The button was not found..." + e.getMessage());
+				return null;
+			}
 		}
 		
 		/**
-		 * Returns the Refresh button
+		 * Wait the email sent by August
 		 * @param driver
-		 * @return Refresh button
 		 */
-		public static WebElement getButton(AppiumDriver driver){
-			List<WebElement> buttons;
-			int countButtons = 4;
-			int current;
+		private static void waitEmail(AppiumDriver driver, long timeout){
+			List<WebElement> options = getEmails(driver);
+			WebElement refreshButton = getButton(driver, byRefresh, timeout);
+			int initialCount = options.size();
+			int currentCount;
 			do {
-				current = driver.findElements(By.className("android.widget.Button")).size();
-			} while (current < countButtons);
-			
-			buttons = driver.findElements(By.className("android.widget.Button"));
-			for(int i = 0; i < buttons.size();i++)
-			{
-				WebElement e = (WebElement)buttons.get(i);
-				String name = e.getAttribute("name");
-				if (name.contains("Refresh"))		
-					return e;
+				refreshButton.click();
+				options = getEmails(driver);
+				currentCount = options.size();
+			} while (currentCount <= initialCount);
+		}
+		
+		/**
+		 * Get the emails in the Email Inbox
+		 * @param driver
+		 * @return list of web elements(emails)
+		 */
+		private static List<WebElement> getEmails(AppiumDriver driver)
+		{
+			try{
+				return driver.findElement(By.id("list")).findElements(By.className("android.widget.FrameLayout"));
 			}
-			return null;
+			catch(Exception e){
+				return null;
+			}
 		}
 }
 

@@ -1,6 +1,7 @@
 package august.screens.registration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,9 +28,9 @@ public class SMSCodeValidationScreen extends ScreenObject{
 	 * Class constructor.
 	 * @param d - AppiumDriver
 	 */
-	public SMSCodeValidationScreen(AppiumDriver d)
+	public SMSCodeValidationScreen(AppiumDriver d, long t)
 	{
-		super(d);
+		super(d, t);
 		this.click(byCodeField, "Enter Code");
 	
 	}
@@ -47,13 +48,31 @@ public class SMSCodeValidationScreen extends ScreenObject{
 	 */
 	public void waitForCode()
 	{
-		WebDriverWait waiter = new WebDriverWait(driver,120);
-		waiter.until(new ExpectedCondition<Boolean>(){
-		            public Boolean apply(WebDriver d) {
-		            	String codeSent = d.findElement(byCodeField).getText();
-		                return (codeSent.length() == 6 && !(codeSent.compareTo("Enter Code") == 0));
-		                		 
-		            }});
-		
+		try{
+		WebDriverWait waiter = new WebDriverWait(driver, 300);
+		waiter.until(new ExpectedCondition<Boolean>()
+						{
+		            		public Boolean apply(WebDriver d) {
+		            				return ((driver.findElement(byCodeField).getText().length() == 6
+		            						&& (driver.findElement(byCodeField).getText().compareTo("Enter Code") != 0)));
+		            				 }
+		            		
+		            	}
+					);
+			}
+		catch(TimeoutException e){}
+	}
+	
+
+	@Override
+	public boolean isExpectedScreen() {
+		return (this.isDisplayed(By.name("We just sent a code to"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_enter_phone_code_field"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_didnt_recieve"))
+				&&
+				this.isDisplayed(By.name("tap to resend"))
+				);
 	}
 }

@@ -5,7 +5,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import io.appium.java_client.AppiumDriver;
 /**
  * 
@@ -29,9 +28,9 @@ public class EmailCodeValidationScreen extends ScreenObject{
 	 * Class constructor.
 	 * @param d - AppiumDriver
 	 */
-	public EmailCodeValidationScreen(AppiumDriver d)
+	public EmailCodeValidationScreen(AppiumDriver d, long t)
 	{
-		super(d);
+		super(d, t);
 	}
 	
 	/**
@@ -70,6 +69,22 @@ public class EmailCodeValidationScreen extends ScreenObject{
 		            }});
 		
 	}
+
+	@Override
+	public boolean isExpectedScreen() {
+		return (this.isDisplayed(By.name("We just sent a code to"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_enter_email_code_field"))
+				&&
+				this.isDisplayed(By.id("com.august.luna:id/signup_flow_didnt_recieve"))
+				&&
+				this.isDisplayed(By.name("tap to resend"))
+				);
+	}
+	
+	
+	
+	
 	
 
 }
